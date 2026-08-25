@@ -388,12 +388,13 @@
     // شمارنده متحرک هر بار که بخش دیده می‌شود
     if(statAnim) statAnim.disconnect();
     const runCounters = root => root.querySelectorAll('.n').forEach(el => {
-      const target = +el.dataset.n, suf = el.dataset.suf, dur = 1400, t0 = performance.now();
-      (function tick(t){
-        const k = Math.min(1,(t-t0)/dur), ease = 1-Math.pow(1-k,3);
+      const target = +el.dataset.n, suf = el.dataset.suf, dur = 1300;
+      const t0 = Date.now();
+      const iv = setInterval(() => {
+        const k = Math.min(1,(Date.now()-t0)/dur), ease = 1-Math.pow(1-k,3);
         el.textContent = Math.round(target*ease) + suf;
-        if(k<1) requestAnimationFrame(tick);
-      })(t0);
+        if(k>=1) clearInterval(iv);
+      }, 30);
     });
     // اگه بخش الان دیده میشه فوراً بشمار، وگرنه با اسکرول
     const rectNow = row.getBoundingClientRect();
