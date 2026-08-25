@@ -114,40 +114,29 @@
 
   .progress{position:absolute;bottom:0;right:0;height:3px;width:0%;background:var(--accent);z-index:4;transition:width .3s linear}
 
-  /* ===== expanded lightbox (بک‌گراند بلر، همان صفحه) ===== */
-  #expandBackdrop{position:fixed;inset:0;z-index:80;display:none;background:rgba(5,10,18,.55);
+  /* ===== expanded view — ویدیو داخل یک لایت‌باکس ثابت باز می‌شود ===== */
+  #expandBackdrop{position:fixed;inset:0;z-index:80;display:none;background:rgba(5,10,18,.6);
     backdrop-filter:blur(28px) saturate(120%);-webkit-backdrop-filter:blur(28px) saturate(120%)}
-  #expandBackdrop.open{display:block;animation:fadeIn .3s var(--ease)}
+  #expandBackdrop.open{display:block;animation:fadeIn .25s var(--ease)}
   @keyframes fadeIn{from{opacity:0}to{opacity:1}}
 
-  .work.expanded{position:fixed;z-index:90;top:50%;left:50%;
-    --exp-h:min(88vh,92vw*16/9);width:calc(var(--exp-h)*9/16);height:var(--exp-h);
-    transform:translate(-50%,-50%);border-radius:28px;
-    box-shadow:0 40px 120px -20px rgba(0,0,0,.8);animation:expandIn .45s var(--ease)}
-  @keyframes expandIn{from{opacity:0}to{opacity:1}}
-
-  /* متن بزرگ روی بک‌بلر کارت */
-  .work .thumb{position:relative}
-  .work img{filter:blur(0px) brightness(.85);transition:.5s var(--ease)}
-  .work:hover:not(.playing):not(.expanded) img{filter:blur(6px) brightness(.55);transform:scale(1.08)}
-  .big-word{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;z-index:2;
-    font-size:clamp(30px,4.5vw,46px);font-weight:800;letter-spacing:.12em;color:#fff;
-    text-shadow:0 4px 30px rgba(0,0,0,.7);pointer-events:none;transition:.35s var(--ease);
-    font-family:'Space Grotesk','Vazirmatn',sans-serif}
-  html[dir="rtl"] .big-word{letter-spacing:0;font-size:clamp(26px,4vw,40px)}
-  .work.playing .big-word,.work.expanded .big-word{opacity:0;transform:scale(1.3)}
-
-  /* موشن اسکرول */
-  .reveal{opacity:0;transform:translateY(34px);transition:opacity .8s var(--ease), transform .8s var(--ease)}
-  .reveal.in{opacity:1;transform:none}
-  .reveal.d1{transition-delay:.1s} .reveal.d2{transition-delay:.2s} .reveal.d3{transition-delay:.3s}
-
-  @keyframes heroIn{from{opacity:0;transform:translateY(26px)}to{opacity:1;transform:none}}
-  header .badge{animation:heroIn .8s var(--ease) both}
-  header h1.name{animation:heroIn .8s .15s var(--ease) both}
-  header .role{animation:heroIn .8s .3s var(--ease) both}
-  header .hero-btns{animation:heroIn .8s .45s var(--ease) both}
-  .lang-switch{animation:heroIn .7s var(--ease) both}
+  #expandBox{position:fixed;z-index:90;display:none;top:50%;left:50%;transform:translate(-50%,-50%);
+    width:min(92vw,calc(88vh*9/16));border-radius:26px;overflow:hidden;
+    border:1px solid rgba(255,255,255,.18);background:#000;
+    box-shadow:0 40px 120px -20px rgba(0,0,0,.85);animation:expandIn .35s var(--ease)}
+  #expandBox.open{display:block}
+  @keyframes expandIn{from{opacity:0;transform:translate(-50%,-50%) scale(.85)}to{opacity:1;transform:translate(-50%,-50%) scale(1)}}
+  #expandBox video{position:static;display:block;width:100%;height:auto}
+  #expandMeta{padding:14px 20px 16px;background:rgba(10,18,30,.85);backdrop-filter:blur(14px);
+    display:flex;align-items:center;justify-content:space-between;gap:14px}
+  #expandTitle{font-weight:800;font-size:15px;color:#fff}
+  .glass-btn{backdrop-filter:blur(18px) saturate(160%);-webkit-backdrop-filter:blur(18px) saturate(160%);
+    background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.25);
+    box-shadow:0 8px 32px rgba(0,0,0,.25), inset 0 1px 0 rgba(255,255,255,.25);
+    display:flex;align-items:center;justify-content:center;cursor:pointer;transition:.25s var(--ease);color:#fff}
+  .glass-btn:hover{background:rgba(255,255,255,.2);transform:scale(1.06)}
+  .glass-btn:active{transform:scale(.96)}
+  #expandClose{width:38px;height:38px;border-radius:50%;font-size:14px;flex-shrink:0}
 
   .contact-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px}
   .contact-card{background:var(--panel);border:1px solid var(--border);border-radius:var(--radius);padding:24px;text-align:center;
@@ -170,6 +159,13 @@
 
 <div class="aurora"><div class="blob b1"></div><div class="blob b2"></div><div class="blob b3"></div></div>
 <div id="expandBackdrop"></div>
+<div id="expandBox">
+  <video playsinline loop controls></video>
+  <div id="expandMeta">
+    <span id="expandTitle"></span>
+    <button class="glass-btn" id="expandClose">✕</button>
+  </div>
+</div>
 
 <!-- language switcher -->
 <div class="lang-switch" id="langSwitch">
@@ -228,19 +224,17 @@
   "use strict";
   let currentLang = localStorage.getItem('pf_lang') || 'en';
   const backdrop = document.getElementById('expandBackdrop');
-  let expandedCard = null;
+  const box      = document.getElementById('expandBox');
+  const boxVid   = box.querySelector('video');
 
   function renderWorks(){
     const grid = document.getElementById('worksGrid');
-    grid.innerHTML = WORKS.map((w,i) => `
-      <div class="work" data-i="${i}">
+    grid.innerHTML = WORKS.map(w => `
+      <div class="work" data-i="${i}" data-src="${w.video}">
         <div class="thumb">
           <img loading="lazy" src="${w.thumb}" alt="">
-          <video preload="metadata" playsinline loop src="${w.video}"></video>
           <div class="big-word">${(w.big&&w.big[currentLang])||''}</div>
-          <div class="play-btn glass-btn" data-act="play"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
-          <button class="stop-btn glass-btn" data-act="stop">✕</button>
-          <div class="progress"></div>
+          <div class="play-btn glass-btn"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
         </div>
         <div class="overlay">
           <div class="t">${w.title[currentLang]}</div>
@@ -250,53 +244,29 @@
       </div>`).join('');
 
     grid.querySelectorAll('.work').forEach(card => {
-      const vid = card.querySelector('video');
-      const prog = card.querySelector('.progress');
-
-      card.addEventListener('click', (e) => {
-        const act = e.target.closest('[data-act]')?.dataset.act;
-        if(act === 'stop'){ closeExpanded(); stopAll(); return; }
-        if(act === 'play'){
-          stopAll();
-          card.classList.add('playing','expanded');
-          backdrop.classList.add('open');
-          expandedCard = card;
-          document.body.style.overflow = 'hidden';
-          vid.currentTime = 0;
-          vid.play().catch(()=>{});
-          return;
-        }
-        // کلیک روی خود ویدیوی در حال پخش = توقف/ادامه
-        if(card.classList.contains('playing')){
-          if(vid.paused) vid.play(); else vid.pause();
-        }
-      });
-
-      vid.addEventListener('timeupdate', () => {
-        prog.style.width = (vid.duration ? (vid.currentTime/vid.duration)*100 : 0) + '%';
-      });
-      vid.addEventListener('ended', () => { closeExpanded(); stopAll(); });
+      const w = WORKS[+card.dataset.i];
+      card.addEventListener('click', () => openPlayer(w.video, w.title[currentLang]));
     });
   }
 
-  function stopCard(card){
-    const v = card.querySelector('video');
-    v.pause();
-    card.classList.remove('playing','expanded');
-    card.querySelector('.progress').style.width = '0%';
+  // پخش در لایت‌باکس وسط صفحه — بدون جابجایی کارت
+  function openPlayer(src, title){
+    document.getElementById('expandTitle').textContent = title;
+    boxVid.src = src;
+    backdrop.classList.add('open');
+    box.classList.add('open');
+    document.body.style.overflow = 'hidden';
+    boxVid.play().catch(()=>{});
   }
-  function stopAll(){ document.querySelectorAll('.work.playing').forEach(stopCard); expandedCard = null; }
-
-  function closeExpanded(){
-    if(expandedCard){ expandedCard.classList.remove('expanded'); expandedCard = null; }
+  function closePlayer(){
+    boxVid.pause(); boxVid.src = '';
     backdrop.classList.remove('open');
+    box.classList.remove('open');
     document.body.style.overflow = '';
   }
-  backdrop.addEventListener('click', () => { closeExpanded(); });
-
-  document.addEventListener('keydown', e => {
-    if(e.key === 'Escape'){ closeExpanded(); stopAll(); }
-  });
+  backdrop.addEventListener('click', closePlayer);
+  document.getElementById('expandClose').addEventListener('click', closePlayer);
+  document.addEventListener('keydown', e => { if(e.key === 'Escape') closePlayer(); });
 
   function applyLang(lang){
     currentLang = lang;
@@ -305,40 +275,44 @@
     document.documentElement.lang = lang;
     document.documentElement.dir = T.dir;
 
-    document.getElementById('badge').textContent = T.badge;
-    document.getElementById('helloTxt').textContent = T.hello;
-    document.getElementById('nameTxt').textContent = T.name;
-    document.getElementById('roleTxt').innerHTML = T.role;
-    document.getElementById('ctaWorks').textContent = T.ctaWorks;
-    document.getElementById('ctaContact').textContent = T.ctaContact;
-    document.getElementById('aboutTitle').textContent = T.aboutTitle;
-    document.getElementById('aboutHtml').innerHTML = T.aboutHtml;
-    document.getElementById('worksTitle').textContent = T.worksTitle;
-    document.getElementById('contactTitle').textContent = T.contactTitle;
-    document.getElementById('tgLbl').textContent = T.telegram;
-    document.getElementById('igLbl').textContent = T.instagram;
-    document.getElementById('emLbl').textContent = T.email;
-    const ph = document.getElementById('phLbl'); if(ph) ph.textContent = T.phone || 'Phone';
-    document.getElementById('footerTxt').textContent = T.footer;
-    document.getElementById('skillsRow').innerHTML = T.skills.map(s=>`<span class="skill">${s}</span>`).join('');
+    const set = (id,val) => { const el=document.getElementById(id); if(el) el.innerHTML = val; };
+    set('badge', T.badge);
+    set('helloTxt', T.hello);
+    set('nameTxt', T.name);
+    set('roleTxt', T.role);
+    set('ctaWorks', T.ctaWorks);
+    set('ctaContact', T.ctaContact);
+    set('aboutTitle', T.aboutTitle);
+    set('aboutHtml', T.aboutHtml);
+    set('worksTitle', T.worksTitle);
+    set('contactTitle', T.contactTitle);
+    set('tgLbl', T.telegram);
+    set('igLbl', T.instagram);
+    set('emLbl', T.email);
+    set('phLbl', T.phone || 'Phone');
+    set('footerTxt', T.footer);
+    set('skillsRow', T.skills.map(s=>`<span class="skill">${s}</span>`).join(''));
     document.title = lang === 'fa' ? 'محمد — تدوینگر ویدیو | نمونه‌کارها' : 'Mohammad — Video Editor | Portfolio';
     document.querySelectorAll('.flag').forEach(f => f.classList.toggle('active', f.dataset.lang === lang));
     renderWorks();
-    observeReveals();
   }
 
   document.querySelectorAll('.flag').forEach(f => {
     f.addEventListener('click', () => applyLang(f.dataset.lang));
   });
 
-  // موشن اسکرول — هر بخش موقع رسیدن به دید، انیمیت میشه
-  const io = new IntersectionObserver((entries) => {
+  // موشن اسکرول ساده و پایدار
+  const io = new IntersectionObserver(entries => {
     entries.forEach(en => { if(en.isIntersecting){ en.target.classList.add('in'); io.unobserve(en.target); } });
-  }, { threshold: .12 });
-  function observeReveals(){ document.querySelectorAll('.reveal:not(.in)').forEach(el => io.observe(el)); }
+  }, { threshold: .1 });
+
+  function initReveals(){
+    document.querySelectorAll('#about, #works, #contact, #about .sec-title, #about .about-card')
+      .forEach(el => { el.classList.add('reveal'); io.observe(el); });
+  }
 
   applyLang(currentLang);
-  observeReveals();
+  initReveals();
 })();</script>
 </body>
 </html>
