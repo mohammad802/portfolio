@@ -119,12 +119,11 @@
   #expandBackdrop.open{display:block;animation:fadeIn .25s var(--ease)}
   @keyframes fadeIn{from{opacity:0}to{opacity:1}}
 
-  #expandBox{position:fixed;z-index:90;display:none;top:50%;left:50%;transform:translate(-50%,-50%);
-    width:min(94vw,calc(80vh*16/9));border-radius:22px;overflow:hidden;
+  #expandBox{position:fixed;z-index:90;display:none;border-radius:16px;overflow:hidden;
     border:1px solid rgba(255,255,255,.18);background:#000;
-    box-shadow:0 40px 120px -20px rgba(0,0,0,.85);animation:expandIn .35s var(--ease)}
+    box-shadow:0 40px 120px -20px rgba(0,0,0,.85);will-change:transform,width,height}
   #expandBox.open{display:block}
-  @keyframes expandIn{from{opacity:0;transform:translate(-50%,-50%) scale(.85)}to{opacity:1;transform:translate(-50%,-50%) scale(1)}}
+  #expandBox.animating{transition:all .45s var(--ease)}
   #expandBox video{position:static;display:block;width:100%;height:auto}
   #expandMeta{padding:14px 20px 16px;background:rgba(10,18,30,.85);backdrop-filter:blur(14px);
     display:flex;align-items:center;justify-content:space-between;gap:14px}
@@ -244,21 +243,46 @@
 
     grid.querySelectorAll('.work').forEach(card => {
       const w = WORKS[+card.dataset.i];
-      card.addEventListener('click', () => openPlayer(w.video, w.title[currentLang]));
+      card.addEventListener('click', () => openPlayer(w.video, w.title[currentLang], card));
     });
   }
 
-  // پخش در لایت‌باکس وسط صفحه — بدون جابجایی کارت
-  function openPlayer(src, title){
+  // پخش: لایت‌باکس از محل دقیق کارت شروع و به مرکز صفحه انیمیت می‌شود
+  function openPlayer(src, title, cardEl){
     document.getElementById('expandTitle').textContent = title;
     boxVid.src = src;
+
+    // مقصد: وسط ویوپورت با نسبت 16:9
+    const vw = innerWidth, vh = innerHeight;
+    const W = Math.min(vw * .92, vh * .8 * 16/9);
+    const H = W * 9 / 16 + 64;   // + نوار عنوان
+    const cx = (vw - W) / 2, cy = (vh - H) / 2;
+
+    // مبدأ: مستطیل کارت کلیک‌شده (نسبت به ویوپورت)
+    let r = cardEl ? cardEl.getBoundingClientRect() : {left:cx,top:cy,width:W,height:H};
+    box.style.transition = 'none';
+    box.style.left   = r.left + 'px';
+    box.style.top    = r.top + 'px';
+    box.style.width  = r.width + 'px';
+    box.style.height = r.height + 'px';
+
     backdrop.classList.add('open');
-    box.classList.add('open');
+    box.classList.add('open','animating');
     document.body.style.overflow = 'hidden';
+
+    requestAnimationFrame(() => requestAnimationFrame(() => {
+      box.style.left   = cx + 'px';
+      box.style.top    = cy + 'px';
+      box.style.width  = W + 'px';
+      box.style.height = H + 'px';
+      setTimeout(() => box.classList.remove('animating'), 500);
+    }));
+
     boxVid.play().catch(()=>{});
   }
   function closePlayer(){
     boxVid.pause(); boxVid.src = '';
+    box.classList.remove('animating');
     backdrop.classList.remove('open');
     box.classList.remove('open');
     document.body.style.overflow = '';
