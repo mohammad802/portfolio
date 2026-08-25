@@ -387,19 +387,26 @@
     row.innerHTML = T.stats.map(s => `<div class="stat"><div class="n" data-n="${s.n}" data-suf="${s.suf}">0${s.suf}</div><div class="l">${s.l}</div></div>`).join('');
     // شمارنده متحرک هر بار که بخش دیده می‌شود
     if(statAnim) statAnim.disconnect();
-    statAnim = new IntersectionObserver(es => es.forEach(e => {
-      if(!e.isIntersecting) return;
-      statAnim.unobserve(e.target);
-      e.target.querySelectorAll('.n').forEach(el => {
-        const target = +el.dataset.n, suf = el.dataset.suf, dur = 1400, t0 = performance.now();
-        (function tick(t){
-          const k = Math.min(1,(t-t0)/dur), ease = 1-Math.pow(1-k,3);
-          el.textContent = Math.round(target*ease) + suf;
-          if(k<1) requestAnimationFrame(tick);
-        })(t0);
-      });
-    }), {threshold:.4});
-    statAnim.observe(row);
+    const runCounters = root => root.querySelectorAll('.n').forEach(el => {
+      const target = +el.dataset.n, suf = el.dataset.suf, dur = 1400, t0 = performance.now();
+      (function tick(t){
+        const k = Math.min(1,(t-t0)/dur), ease = 1-Math.pow(1-k,3);
+        el.textContent = Math.round(target*ease) + suf;
+        if(k<1) requestAnimationFrame(tick);
+      })(t0);
+    });
+    // اگه بخش الان دیده میشه فوراً بشمار، وگرنه با اسکرول
+    const rectNow = row.getBoundingClientRect();
+    if(rectNow.top < innerHeight && rectNow.bottom > 0){ runCounters(row); }
+    else {
+      if(statAnim) statAnim.disconnect();
+      statAnim = new IntersectionObserver(es => es.forEach(e => {
+        if(!e.isIntersecting) return;
+        statAnim.unobserve(e.target);
+        runCounters(e.target);
+      }), {threshold:.3});
+      statAnim.observe(row);
+    }
   }
   function set2(id,val){ const el=document.getElementById(id); if(el) el.innerHTML=val; }
 
