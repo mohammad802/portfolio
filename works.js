@@ -111,6 +111,7 @@ const I18N = {
   en: {
     dir: "ltr",
     badge: "✂️ Available for new projects",
+    brandHello: "Hi, I'm Mohammad", brandRole: "Video Editor",
     hello: "Hi, I'm",
     name: "Mohammad",
     role: "<b>Video Editor</b> — Premiere Pro · After Effects · Motion Design",
@@ -155,6 +156,7 @@ const I18N = {
   fa: {
     dir: "rtl",
     badge: "✂️ آماده‌ی پروژه‌ی جدید",
+    brandHello: "سلام، من محمدم", brandRole: "تدوینگر ویدیو",
     hello: "سلام، من",
     name: "محمد",
     role: "<b>تدوینگر ویدیو</b> — پریمیر · افترافکت · موشن گرافیک",

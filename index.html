@@ -20,7 +20,7 @@
   html[dir="rtl"] body{font-family:'Vazirmatn','Space Grotesk',system-ui,sans-serif}
   *{box-sizing:border-box}
   html{scroll-behavior:smooth}
-  body{margin:0;background:var(--bg);color:var(--text);line-height:1.9;font-family:var(--font-main)}
+  body{margin:0;background:var(--bg);color:var(--text);line-height:1.9;font-family:var(--font-main);padding-top:42px}
 
   .aurora{position:fixed;inset:0;z-index:-1;overflow:hidden}
   .blob{position:absolute;border-radius:50%;filter:blur(120px);opacity:.32}
@@ -33,7 +33,11 @@
   .wrap{max-width:1080px;margin:0 auto;padding:0 20px}
 
   /* ===== language switcher ===== */
-  .lang-switch{position:fixed;top:16px;left:16px;z-index:50;display:flex;gap:6px;background:var(--panel);
+  .topbar{position:fixed;top:0;left:0;right:0;z-index:40;text-align:center;padding:10px 16px;
+    background:rgba(6,12,22,.55);backdrop-filter:blur(16px);border-bottom:1px solid var(--border);
+    font-size:13px;color:var(--muted)}
+  .topbar b{color:#fff;font-weight:800}
+  .lang-switch{position:fixed;top:52px;left:16px;z-index:50;display:flex;gap:6px;background:var(--panel);
     border:1px solid var(--border);border-radius:999px;padding:5px;backdrop-filter:blur(14px)}
   .flag{width:34px;height:34px;border-radius:50%;cursor:pointer;display:flex;align-items:center;justify-content:center;
     font-size:17px;border:2px solid transparent;transition:.25s var(--ease);overflow:hidden;background:rgba(255,255,255,.05)}
@@ -175,7 +179,10 @@
   .step .num{position:absolute;top:14px;left:16px;font-size:44px;font-weight:800;color:rgba(56,189,248,.12);
     font-family:'Space Grotesk',sans-serif;line-height:1}
   html[dir="rtl"] .step .num{left:auto;right:16px}
-  .step .ico{font-size:28px;margin-bottom:12px}
+  .step .step-ico{width:52px;height:52px;border-radius:14px;background:rgba(56,189,248,.1);
+    border:1px solid rgba(125,211,252,.25);display:flex;align-items:center;justify-content:center;
+    margin-bottom:14px;backdrop-filter:blur(8px)}
+  .step .step-ico svg{width:26px;height:26px}
   .step h4{margin:0 0 6px;font-size:14.5px;font-weight:800}
   .step p{margin:0;font-size:12px;color:var(--muted);line-height:1.8}
 
@@ -216,12 +223,15 @@
   @media(max-width:640px){
     section{padding:52px 0}
     .about-card{padding:24px 20px}
-    .lang-switch{top:10px;left:10px}
+    .lang-switch{top:48px;left:10px}
   }
 </style>
 </head>
 <body>
 
+<div class="topbar">
+  <span class="brand">👋 <b id="brandHello">Hi, I'm Mohammad</b> — <span id="brandRole">Video Editor</span></span>
+</div>
 <div class="aurora"><div class="blob b1"></div><div class="blob b2"></div><div class="blob b3"></div></div>
 
 <!-- language switcher -->
@@ -376,7 +386,7 @@
     set2('processTitle', T.processTitle);
     document.getElementById('stepsRow').innerHTML = T.steps.map((s,i) => `
       <div class="step"><span class="num">0${i+1}</span>
-        <div class="ico">${s.ico}</div><h4>${s.t}</h4><p>${s.d}</p>
+        <div class="step-ico">${STEP_ICONS[s.ico]||''}</div><h4>${s.t}</h4><p>${s.d}</p>
       </div>`).join('');
   }
   function renderFaq(){
@@ -417,6 +427,14 @@
   }
   function set2(id,val){ const el=document.getElementById(id); if(el) el.innerHTML=val; }
 
+
+  const STEP_ICONS = {
+    box: '<svg viewBox="0 0 24 24"><path fill="none" stroke="#7dd3fc" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><path fill="none" stroke="#7dd3fc" stroke-width="1.8" stroke-linejoin="round" d="M21 8l-9-5-9 5v8l9 5 9-5V8z"/><path fill="none" stroke="#7dd3fc" stroke-width="1.8" stroke-linejoin="round" d="M3.3 8.1L12 13l8.7-4.9M12 13v9"/></svg>',
+    scissors: '<svg viewBox="0 0 24 24" fill="none" stroke="#7dd3fc" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="6" cy="6" r="2.6"/><circle cx="6" cy="18" r="2.6"/><path d="M20 4L8.12 15.88M14.47 14.48L20 20M8.12 8.12L12 12"/></svg>',
+    eye: '<svg viewBox="0 0 24 24" fill="none" stroke="#7dd3fc" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-7.5 11-7.5S23 12 23 12s-4 7.5-11 7.5S1 12 1 12z"/><circle cx="12" cy="12" r="3"/></svg>',
+    rocket: '<svg viewBox="0 0 24 24" fill="none" stroke="#7dd3fc" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09z"/><path d="M12 15l-3-3a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.35 22.35 0 0 1-4 2z"/><path d="M9 12H4s.55-3.03 2-4c1.62-1.08 5 0 5 0M12 15v5s3.03-.55 4-2c1.08-1.62 0-5 0-5"/></svg>'
+  };
+
   function applyLang(lang){
     currentLang = lang;
     localStorage.setItem('pf_lang', lang);
@@ -427,7 +445,8 @@
     const map = { badge:'badge', helloTxt:'hello', nameTxt:'name', roleTxt:'role',
       ctaWorks:'ctaWorks', ctaContact:'ctaContact', aboutTitle:'aboutTitle',
       aboutHtml:'aboutHtml', worksTitle:'worksTitle', contactTitle:'contactTitle',
-      tgLbl:'telegram', igLbl:'instagram', emLbl:'email', footerTxt:'footer' };
+      tgLbl:'telegram', igLbl:'instagram', emLbl:'email', footerTxt:'footer',
+      brandHello:'brandHello', brandRole:'brandRole' };
     Object.entries(map).forEach(([id, key]) => set(id, T[key]));
     set('phLbl', T.phone || 'Phone');
     document.title = lang === 'fa' ? 'محمد — تدوینگر ویدیو | نمونه‌کارها' : 'Mohammad — Video Editor | Portfolio';
