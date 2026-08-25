@@ -72,34 +72,59 @@
     border:1px solid var(--border);transition:.2s}
   .skill:hover{border-color:var(--accent);color:var(--accent-soft);transform:translateY(-2px)}
 
-  /* ===== works ===== */
-  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(310px,1fr));gap:22px}
-  .work{position:relative;border-radius:var(--radius);overflow:hidden;background:var(--panel);border:1px solid var(--border);
-    cursor:pointer;transition:.35s var(--ease)}
+  /* ===== works — vertical reels cards ===== */
+  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:20px;justify-content:center}
+  @media(min-width:760px){ .grid{grid-template-columns:repeat(3,1fr);max-width:760px;margin:0 auto} }
+
+  .work{position:relative;border-radius:22px;overflow:hidden;background:var(--panel);border:1px solid var(--border);
+    cursor:pointer;transition:.35s var(--ease);aspect-ratio:9/16}
   .work:hover{transform:translateY(-5px);border-color:var(--accent);box-shadow:0 24px 50px -18px rgba(56,189,248,.3)}
-  .work .thumb{position:relative;aspect-ratio:16/10;overflow:hidden}
   .work img{width:100%;height:100%;object-fit:cover;display:block;transition:.5s var(--ease)}
-  .work.playing img{filter:brightness(.4) saturate(.7)}
-  .work:hover:not(.playing) img{transform:scale(1.05)}
+  .work.playing:not(.expanded) img{filter:brightness(.35) saturate(.6)}
+  .work:hover:not(.playing):not(.expanded) img{transform:scale(1.05)}
   .work video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:none;background:#000}
   .work.playing video{display:block}
-  .work .overlay{position:absolute;inset:0;background:linear-gradient(to top,rgba(4,10,18,.94) 0%,transparent 60%);
-    display:flex;flex-direction:column;justify-content:flex-end;padding:18px 20px;pointer-events:none;transition:.3s}
-  .work.playing .overlay{opacity:0}
-  .work.playing:hover .overlay{opacity:1}
-  .work .t{font-weight:800;font-size:15.5px}
-  .work .d{font-size:11.5px;color:var(--muted);margin-top:3px;line-height:1.7}
-  .tag-row{display:flex;gap:6px;flex-wrap:wrap;margin-top:9px}
-  .tag{font-size:10px;font-weight:700;padding:3px 10px;border-radius:999px;background:rgba(56,189,248,.15);
+  .work.expanded video{object-fit:contain}
+
+  .work .overlay{position:absolute;inset:0;background:linear-gradient(to top,rgba(4,10,18,.95) 0%,transparent 55%);
+    display:flex;flex-direction:column;justify-content:flex-end;padding:16px;pointer-events:none;transition:.3s}
+  .work.playing:not(.expanded) .overlay,.work.expanded .overlay{opacity:0}
+  .work.playing:not(.expanded):hover .overlay,.work.expanded:hover .overlay{opacity:1}
+  .work .t{font-weight:800;font-size:14.5px}
+  .work .d{font-size:11px;color:var(--muted);margin-top:2px;line-height:1.6}
+  .tag-row{display:flex;gap:5px;flex-wrap:wrap;margin-top:8px}
+  .tag{font-size:9.5px;font-weight:700;padding:3px 9px;border-radius:999px;background:rgba(56,189,248,.15);
     color:var(--accent-soft);backdrop-filter:blur(6px)}
-  .play-btn{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%) scale(.85);width:62px;height:62px;border-radius:50%;
-    background:rgba(56,189,248,.92);display:flex;align-items:center;justify-content:center;opacity:0;transition:.3s var(--ease);z-index:3}
-  .work:hover:not(.playing) .play-btn{opacity:1;transform:translate(-50%,-50%) scale(1)}
-  .play-btn svg{width:24px;height:24px;fill:#06202e;margin-right:3px}
-  .stop-btn{position:absolute;top:12px;left:12px;z-index:4;width:34px;height:34px;border-radius:50%;border:1px solid var(--border);
-    background:rgba(4,10,18,.7);color:var(--text);font-size:14px;cursor:pointer;display:none;backdrop-filter:blur(8px)}
-  .work.playing .stop-btn{display:block}
+
+  /* دکمه‌های شیشه‌ای سبک iOS */
+  .glass-btn{backdrop-filter:blur(18px) saturate(160%);-webkit-backdrop-filter:blur(18px) saturate(160%);
+    background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.25);
+    box-shadow:0 8px 32px rgba(0,0,0,.25), inset 0 1px 0 rgba(255,255,255,.25);
+    display:flex;align-items:center;justify-content:center;cursor:pointer;transition:.25s var(--ease);color:#fff}
+  .glass-btn:hover{background:rgba(255,255,255,.2);transform:scale(1.06)}
+  .glass-btn:active{transform:scale(.96)}
+
+  .play-btn{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%) scale(.85);
+    width:64px;height:64px;border-radius:50%;opacity:0;z-index:3}
+  .play-btn svg{width:26px;height:26px;fill:#fff;margin-right:3px}
+  .work:hover:not(.playing):not(.expanded) .play-btn{opacity:1;transform:translate(-50%,-50%) scale(1)}
+
+  .stop-btn{position:absolute;top:12px;left:12px;width:38px;height:38px;border-radius:50%;font-size:15px;z-index:4;display:none}
+  .work.playing .stop-btn,.work.expanded .stop-btn{display:flex}
+
   .progress{position:absolute;bottom:0;right:0;height:3px;width:0%;background:var(--accent);z-index:4;transition:width .3s linear}
+
+  /* ===== expanded lightbox (بک‌گراند بلر، همان صفحه) ===== */
+  #expandBackdrop{position:fixed;inset:0;z-index:80;display:none;background:rgba(5,10,18,.55);
+    backdrop-filter:blur(28px) saturate(120%);-webkit-backdrop-filter:blur(28px) saturate(120%)}
+  #expandBackdrop.open{display:block;animation:fadeIn .3s var(--ease)}
+  @keyframes fadeIn{from{opacity:0}to{opacity:1}}
+
+  .work.expanded{position:fixed;z-index:90;top:50%;left:50%;
+    --exp-h:min(88vh,92vw*16/9);width:calc(var(--exp-h)*9/16);height:var(--exp-h);
+    transform:translate(-50%,-50%);border-radius:28px;
+    box-shadow:0 40px 120px -20px rgba(0,0,0,.8);animation:expandIn .45s var(--ease)}
+  @keyframes expandIn{from{opacity:0}to{opacity:1}}
 
   .contact-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px}
   .contact-card{background:var(--panel);border:1px solid var(--border);border-radius:var(--radius);padding:24px;text-align:center;
@@ -121,6 +146,7 @@
 <body>
 
 <div class="aurora"><div class="blob b1"></div><div class="blob b2"></div><div class="blob b3"></div></div>
+<div id="expandBackdrop"></div>
 
 <!-- language switcher -->
 <div class="lang-switch" id="langSwitch">
@@ -175,6 +201,8 @@
 (function(){
   "use strict";
   let currentLang = localStorage.getItem('pf_lang') || 'en';
+  const backdrop = document.getElementById('expandBackdrop');
+  let expandedCard = null;
 
   function renderWorks(){
     const grid = document.getElementById('worksGrid');
@@ -182,9 +210,9 @@
       <div class="work" data-i="${i}">
         <div class="thumb">
           <img loading="lazy" src="${w.thumb}" alt="">
-          <video preload="metadata" playsinline loop muted src="${w.video}"></video>
-          <div class="play-btn"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
-          <button class="stop-btn" title="Stop">✕</button>
+          <video preload="metadata" playsinline loop src="${w.video}"></video>
+          <div class="play-btn glass-btn" data-act="play"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
+          <button class="stop-btn glass-btn" data-act="stop">✕</button>
           <div class="progress"></div>
         </div>
         <div class="overlay">
@@ -197,32 +225,51 @@
     grid.querySelectorAll('.work').forEach(card => {
       const vid = card.querySelector('video');
       const prog = card.querySelector('.progress');
+
       card.addEventListener('click', (e) => {
-        if(e.target.classList.contains('stop-btn')){ stopAll(); return; }
-        if(card.classList.contains('playing')) return;
-        stopAll();
-        // شروع پخش inline داخل همون کارت
-        card.classList.add('playing');
-        vid.muted = false;
-        vid.currentTime = 0;
-        vid.play().catch(()=>{ vid.muted = true; vid.play(); });
+        const act = e.target.closest('[data-act]')?.dataset.act;
+        if(act === 'stop'){ closeExpanded(); stopAll(); return; }
+        if(act === 'play'){
+          stopAll();
+          card.classList.add('playing','expanded');
+          backdrop.classList.add('open');
+          expandedCard = card;
+          document.body.style.overflow = 'hidden';
+          vid.currentTime = 0;
+          vid.play().catch(()=>{});
+          return;
+        }
+        // کلیک روی خود ویدیوی در حال پخش = توقف/ادامه
+        if(card.classList.contains('playing')){
+          if(vid.paused) vid.play(); else vid.pause();
+        }
       });
+
       vid.addEventListener('timeupdate', () => {
         prog.style.width = (vid.duration ? (vid.currentTime/vid.duration)*100 : 0) + '%';
       });
-      vid.addEventListener('ended', () => stopCard(card));
+      vid.addEventListener('ended', () => { closeExpanded(); stopAll(); });
     });
   }
 
   function stopCard(card){
     const v = card.querySelector('video');
     v.pause();
-    card.classList.remove('playing');
+    card.classList.remove('playing','expanded');
     card.querySelector('.progress').style.width = '0%';
   }
-  function stopAll(){
-    document.querySelectorAll('.work.playing').forEach(stopCard);
+  function stopAll(){ document.querySelectorAll('.work.playing').forEach(stopCard); expandedCard = null; }
+
+  function closeExpanded(){
+    if(expandedCard){ expandedCard.classList.remove('expanded'); expandedCard = null; }
+    backdrop.classList.remove('open');
+    document.body.style.overflow = '';
   }
+  backdrop.addEventListener('click', () => { closeExpanded(); });
+
+  document.addEventListener('keydown', e => {
+    if(e.key === 'Escape'){ closeExpanded(); stopAll(); }
+  });
 
   function applyLang(lang){
     currentLang = lang;
@@ -256,7 +303,6 @@
   });
 
   applyLang(currentLang);
-})();
-</script>
+})();</script>
 </body>
 </html>
