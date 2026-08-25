@@ -1,57 +1,69 @@
 <!DOCTYPE html>
-<html lang="fa" dir="rtl">
+<html lang="en" dir="ltr">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>محمد — تدوینگر ویدیو | نمونه‌کارها</title>
+<title>Mohammad — Video Editor | Portfolio</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Vazirmatn:wght@300;400;600;800&display=swap" rel="stylesheet">
 <style>
   :root{
-    --bg:#0a0d14; --panel:rgba(255,255,255,.05); --border:rgba(255,255,255,.12);
-    --text:#f2f4f8; --muted:rgba(242,244,248,.55); --faint:rgba(242,244,248,.3);
-    --accent:#ff6b5b; --accent-soft:#ff9a8d; --teal:#2dd4bf;
+    /* تم آرامش‌بخش: اقیانوس آرام — آبی تیره + فیروزه‌ای */
+    --bg:#0a1220; --panel:rgba(255,255,255,.05); --border:rgba(140,190,220,.14);
+    --text:#eef4f8; --muted:rgba(238,244,248,.55); --faint:rgba(238,244,248,.3);
+    --accent:#38bdf8;        /* آبی روشن */
+    --accent-soft:#7dd3fc;
+    --teal:#2dd4bf;
     --radius:18px; --ease:cubic-bezier(.22,1,.36,1);
+    --font-main:'Space Grotesk','Vazirmatn',system-ui,sans-serif;
   }
+  html[dir="rtl"] body{font-family:'Vazirmatn','Space Grotesk',system-ui,sans-serif}
   *{box-sizing:border-box}
   html{scroll-behavior:smooth}
-  body{margin:0;background:var(--bg);color:var(--text);font-family:'Vazirmatn',system-ui,sans-serif;line-height:1.9}
+  body{margin:0;background:var(--bg);color:var(--text);line-height:1.9;font-family:var(--font-main)}
 
-  /* aurora background */
   .aurora{position:fixed;inset:0;z-index:-1;overflow:hidden}
-  .blob{position:absolute;border-radius:50%;filter:blur(110px);opacity:.4}
-  .b1{width:44vw;height:44vw;top:-12%;right:-10%;background:var(--accent);animation:f1 24s ease-in-out infinite}
-  .b2{width:36vw;height:36vw;bottom:-14%;left:-8%;background:#7c3aed;opacity:.28;animation:f2 30s ease-in-out infinite}
-  .b3{width:26vw;height:26vw;top:40%;left:35%;background:var(--teal);opacity:.16;animation:f1 34s ease-in-out infinite reverse}
+  .blob{position:absolute;border-radius:50%;filter:blur(120px);opacity:.32}
+  .b1{width:46vw;height:46vw;top:-14%;right:-12%;background:#0369a1;animation:f1 26s ease-in-out infinite}
+  .b2{width:38vw;height:38vw;bottom:-16%;left:-10%;background:#0f766e;opacity:.25;animation:f2 32s ease-in-out infinite}
+  .b3{width:28vw;height:28vw;top:42%;left:30%;background:#38bdf8;opacity:.14;animation:f1 36s ease-in-out infinite reverse}
   @keyframes f1{0%,100%{transform:translate(0,0) scale(1)}50%{transform:translate(-5vw,7vh) scale(1.12)}}
   @keyframes f2{0%,100%{transform:translate(0,0) scale(1)}50%{transform:translate(6vw,-5vh) scale(1.08)}}
 
   .wrap{max-width:1080px;margin:0 auto;padding:0 20px}
 
+  /* ===== language switcher ===== */
+  .lang-switch{position:fixed;top:16px;left:16px;z-index:50;display:flex;gap:6px;background:var(--panel);
+    border:1px solid var(--border);border-radius:999px;padding:5px;backdrop-filter:blur(14px)}
+  .flag{width:34px;height:34px;border-radius:50%;cursor:pointer;display:flex;align-items:center;justify-content:center;
+    font-size:17px;border:2px solid transparent;transition:.25s var(--ease);overflow:hidden;background:rgba(255,255,255,.05)}
+  .flag:hover{transform:scale(1.08)}
+  .flag.active{border-color:var(--accent);box-shadow:0 0 12px rgba(56,189,248,.45)}
+  .flag img{width:100%;height:100%;object-fit:cover}
+
   /* ===== hero ===== */
   header{min-height:92vh;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;padding:60px 20px 30px}
-  .badge{font-size:12px;font-weight:600;color:var(--accent-soft);background:var(--panel);border:1px solid var(--border);
-    padding:7px 16px;border-radius:999px;letter-spacing:.05em;margin-bottom:22px;backdrop-filter:blur(12px)}
-  h1.name{font-family:'Space Grotesk','Vazirmatn',sans-serif;font-size:clamp(38px,7vw,72px);font-weight:700;margin:0;line-height:1.25}
-  h1 .grad{background:linear-gradient(120deg,var(--accent-soft),var(--accent),#a78bfa);
+  .badge{font-size:12.5px;font-weight:600;color:var(--accent-soft);background:var(--panel);border:1px solid var(--border);
+    padding:7px 18px;border-radius:999px;letter-spacing:.04em;margin-bottom:22px;backdrop-filter:blur(12px)}
+  h1.name{font-size:clamp(36px,7vw,70px);font-weight:700;margin:0;line-height:1.3}
+  h1 .grad{background:linear-gradient(120deg,var(--accent-soft),var(--teal));
     -webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
-  .role{font-size:clamp(15px,2.4vw,21px);color:var(--muted);margin-top:10px;font-weight:300}
+  .role{font-size:clamp(15px,2.4vw,20px);color:var(--muted);margin-top:10px;font-weight:300}
   .role b{color:var(--text);font-weight:600}
   .hero-btns{display:flex;gap:12px;margin-top:32px;flex-wrap:wrap;justify-content:center}
-  .btn{font-family:inherit;text-decoration:none;font-size:13.5px;font-weight:700;padding:13px 26px;border-radius:999px;
+  .btn{font-family:inherit;text-decoration:none;font-size:13.5px;font-weight:700;padding:13px 27px;border-radius:999px;
     transition:.25s var(--ease);cursor:pointer;border:none;display:inline-flex;align-items:center;gap:8px}
-  .btn.primary{background:linear-gradient(150deg,var(--accent-soft),var(--accent));color:#181008;box-shadow:0 12px 30px -8px rgba(255,107,91,.45)}
+  .btn.primary{background:linear-gradient(150deg,#7dd3fc,#38bdf8);color:#06202e;box-shadow:0 12px 30px -8px rgba(56,189,248,.4)}
   .btn.primary:hover{transform:translateY(-2px)}
   .btn.ghost{background:var(--panel);color:var(--text);border:1px solid var(--border);backdrop-filter:blur(10px)}
-  .btn.ghost:hover{background:rgba(255,255,255,.1)}
+  .btn.ghost:hover{background:rgba(255,255,255,.09)}
 
-  /* ===== sections ===== */
   section{padding:70px 0}
   .sec-title{display:flex;align-items:center;gap:14px;margin-bottom:34px}
-  .sec-title h2{font-family:'Space Grotesk','Vazirmatn',sans-serif;font-size:clamp(22px,3.5vw,30px);margin:0;font-weight:800;white-space:nowrap}
+  .sec-title h2{font-size:clamp(22px,3.5vw,30px);margin:0;font-weight:800;white-space:nowrap}
   .sec-title::after{content:"";flex:1;height:1px;background:linear-gradient(to left,var(--border),transparent)}
+  html[dir="rtl"] .sec-title::after{background:linear-gradient(to right,var(--border),transparent)}
 
-  /* about */
   .about-card{background:var(--panel);border:1px solid var(--border);border-radius:var(--radius);
     backdrop-filter:blur(18px);padding:30px 34px;font-size:15.5px;color:var(--muted)}
   .about-card b{color:var(--text)}
@@ -60,37 +72,35 @@
     border:1px solid var(--border);transition:.2s}
   .skill:hover{border-color:var(--accent);color:var(--accent-soft);transform:translateY(-2px)}
 
-  /* works grid */
-  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:22px}
+  /* ===== works ===== */
+  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(310px,1fr));gap:22px}
   .work{position:relative;border-radius:var(--radius);overflow:hidden;background:var(--panel);border:1px solid var(--border);
-    cursor:pointer;transition:.35s var(--ease);aspect-ratio:16/10}
-  .work:hover{transform:translateY(-6px);border-color:var(--accent);box-shadow:0 24px 50px -18px rgba(255,107,91,.35)}
+    cursor:pointer;transition:.35s var(--ease)}
+  .work:hover{transform:translateY(-5px);border-color:var(--accent);box-shadow:0 24px 50px -18px rgba(56,189,248,.3)}
+  .work .thumb{position:relative;aspect-ratio:16/10;overflow:hidden}
   .work img{width:100%;height:100%;object-fit:cover;display:block;transition:.5s var(--ease)}
-  .work:hover img{transform:scale(1.06)}
-  .work .overlay{position:absolute;inset:0;background:linear-gradient(to top,rgba(5,7,12,.92) 0%,transparent 55%);
-    display:flex;flex-direction:column;justify-content:flex-end;padding:20px}
-  .work .t{font-weight:800;font-size:16px}
-  .work .d{font-size:12px;color:var(--muted);margin-top:3px}
-  .work .play{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%) scale(.85);width:64px;height:64px;border-radius:50%;
-    background:rgba(255,107,91,.92);display:flex;align-items:center;justify-content:center;opacity:0;transition:.3s var(--ease)}
-  .work:hover .play{opacity:1;transform:translate(-50%,-50%) scale(1)}
-  .play svg{width:24px;height:24px;fill:#181008;margin-right:3px}
+  .work.playing img{filter:brightness(.4) saturate(.7)}
+  .work:hover:not(.playing) img{transform:scale(1.05)}
+  .work video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:none;background:#000}
+  .work.playing video{display:block}
+  .work .overlay{position:absolute;inset:0;background:linear-gradient(to top,rgba(4,10,18,.94) 0%,transparent 60%);
+    display:flex;flex-direction:column;justify-content:flex-end;padding:18px 20px;pointer-events:none;transition:.3s}
+  .work.playing .overlay{opacity:0}
+  .work.playing:hover .overlay{opacity:1}
+  .work .t{font-weight:800;font-size:15.5px}
+  .work .d{font-size:11.5px;color:var(--muted);margin-top:3px;line-height:1.7}
   .tag-row{display:flex;gap:6px;flex-wrap:wrap;margin-top:9px}
-  .tag{font-size:10px;font-weight:700;padding:3px 10px;border-radius:999px;background:rgba(255,255,255,.1);backdrop-filter:blur(6px)}
+  .tag{font-size:10px;font-weight:700;padding:3px 10px;border-radius:999px;background:rgba(56,189,248,.15);
+    color:var(--accent-soft);backdrop-filter:blur(6px)}
+  .play-btn{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%) scale(.85);width:62px;height:62px;border-radius:50%;
+    background:rgba(56,189,248,.92);display:flex;align-items:center;justify-content:center;opacity:0;transition:.3s var(--ease);z-index:3}
+  .work:hover:not(.playing) .play-btn{opacity:1;transform:translate(-50%,-50%) scale(1)}
+  .play-btn svg{width:24px;height:24px;fill:#06202e;margin-right:3px}
+  .stop-btn{position:absolute;top:12px;left:12px;z-index:4;width:34px;height:34px;border-radius:50%;border:1px solid var(--border);
+    background:rgba(4,10,18,.7);color:var(--text);font-size:14px;cursor:pointer;display:none;backdrop-filter:blur(8px)}
+  .work.playing .stop-btn{display:block}
+  .progress{position:absolute;bottom:0;right:0;height:3px;width:0%;background:var(--accent);z-index:4;transition:width .3s linear}
 
-  /* lightbox */
-  #lightbox{position:fixed;inset:0;z-index:100;background:rgba(3,5,9,.94);backdrop-filter:blur(8px);
-    display:none;align-items:center;justify-content:center;flex-direction:column;padding:20px}
-  #lightbox.open{display:flex;animation:lbIn .25s var(--ease)}
-  @keyframes lbIn{from{opacity:0}to{opacity:1}}
-  #lightbox video{width:min(1000px,94vw);max-height:74vh;border-radius:14px;background:#000;outline:none}
-  #lbTitle{margin:18px 0 4px;font-size:18px;font-weight:800}
-  #lbDesc{color:var(--muted);font-size:13px;margin-bottom:6px;text-align:center}
-  #lbClose{position:absolute;top:20px;left:20px;width:44px;height:44px;border-radius:50%;background:rgba(255,255,255,.08);
-    border:1px solid var(--border);color:var(--text);font-size:19px;cursor:pointer;transition:.2s}
-  #lbClose:hover{background:rgba(255,107,91,.25)}
-
-  /* contact */
   .contact-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px}
   .contact-card{background:var(--panel);border:1px solid var(--border);border-radius:var(--radius);padding:24px;text-align:center;
     text-decoration:none;color:var(--text);transition:.3s var(--ease);backdrop-filter:blur(12px)}
@@ -104,6 +114,7 @@
   @media(max-width:640px){
     section{padding:52px 0}
     .about-card{padding:24px 20px}
+    .lang-switch{top:10px;left:10px}
   }
 </style>
 </head>
@@ -111,114 +122,140 @@
 
 <div class="aurora"><div class="blob b1"></div><div class="blob b2"></div><div class="blob b3"></div></div>
 
-<!-- ============ HERO ============ -->
+<!-- language switcher -->
+<div class="lang-switch" id="langSwitch">
+  <div class="flag active" data-lang="en" title="English">🇬🇧</div>
+  <div class="flag" data-lang="fa" title="فارسی">🇮🇷</div>
+</div>
+
 <header>
-  <div class="badge">✂️ در دسترس برای پروژه‌ی جدید</div>
-  <h1 class="name">سلام، من <span class="grad">محمد</span>م</h1>
-  <div class="role"><b>تدوینگر ویدیو</b> — Premiere Pro · After Effects · موشن گرافیک</div>
+  <div class="badge" id="badge"></div>
+  <h1 class="name"><span id="helloTxt"></span> <span class="grad" id="nameTxt"></span></h1>
+  <div class="role" id="roleTxt"></div>
   <div class="hero-btns">
-    <a class="btn primary" href="#works">🎬 دیدن نمونه‌کارها</a>
-    <a class="btn ghost" href="#contact">💬 سفارش پروژه</a>
+    <a class="btn primary" href="#works" id="ctaWorks"></a>
+    <a class="btn ghost" href="#contact" id="ctaContact"></a>
   </div>
 </header>
 
 <div class="wrap">
-
-<!-- ============ ABOUT ============ -->
 <section id="about">
-  <div class="sec-title"><h2>درباره‌ی من</h2></div>
+  <div class="sec-title"><h2 id="aboutTitle"></h2></div>
   <div class="about-card">
-    بیش از <b>چند ساله</b> که توی دنیای تدوین زندگی می‌کنم — از کات‌های سریع و ریتمیک گیم‌پلی گرفته تا
-    موشن گرافیک‌های تمیز و رتوش رنگ حرفه‌ای. ابزار اصلی من <b>Premiere Pro 2025</b> و <b>After Effects 2025</b> هست
-    و روی صدا هم با تجهیزات اختصاصی (EVO 4 + Audio-Technica) کار می‌کنم.
-    <br><br>
-    هر پروژه برام یه چالش تازه‌ست: پیدا کردن اون «لحظه» که مخاطب رو می‌خوابونه به صندلی.
-    <div class="skills">
-      <span class="skill">🎞 Premiere Pro 2025</span>
-      <span class="skill">✨ After Effects 2025</span>
-      <span class="skill">🎨 Color Grading</span>
-      <span class="skill">🔊 Sound Design</span>
-      <span class="skill">🎮 گیم‌پلی و گیمینگ</span>
-      <span class="skill">📱 محتوای شبکه‌های اجتماعی</span>
-      <span class="skill">⚡ شورت‌فرم / Reels</span>
-    </div>
+    <span id="aboutHtml"></span>
+    <div class="skills" id="skillsRow"></div>
   </div>
 </section>
 
-<!-- ============ WORKS ============ -->
 <section id="works">
-  <div class="sec-title"><h2>نمونه‌کارها</h2></div>
-  <!-- کارت‌ها با JS از فایل works.js لود میشن — برای افزودن ویدیو جدید فقط اون فایل رو ادیت کن -->
+  <div class="sec-title"><h2 id="worksTitle"></h2></div>
   <div class="grid" id="worksGrid"></div>
 </section>
 
-<!-- ============ CONTACT ============ -->
 <section id="contact">
-  <div class="sec-title"><h2>تماس با من</h2></div>
+  <div class="sec-title"><h2 id="contactTitle"></h2></div>
   <div class="contact-grid">
     <a class="contact-card" href="https://t.me/mohammad802" target="_blank" rel="noopener">
-      <div class="ico">✈️</div><div class="t">تلگرام</div><div class="v">@mohammad802</div>
+      <div class="ico">✈️</div><div class="t" id="tgLbl"></div><div class="v">@mohammad802</div>
     </a>
     <a class="contact-card" href="https://instagram.com/" target="_blank" rel="noopener">
-      <div class="ico">📸</div><div class="t">اینستاگرام</div><div class="v">@username</div>
+      <div class="ico">📸</div><div class="t" id="igLbl"></div><div class="v">@username</div>
     </a>
     <a class="contact-card" href="mailto:mohammad@example.com">
-      <div class="ico">📧</div><div class="t">ایمیل</div><div class="v">mohammad@example.com</div>
+      <div class="ico">📧</div><div class="t" id="emLbl"></div><div class="v">mohammad@example.com</div>
     </a>
   </div>
 </section>
-
 </div>
 
-<footer>ساخته‌شده با ❤️ توسط محمد · © ۲۰۲۶</footer>
-
-<!-- ============ LIGHTBOX ============ -->
-<div id="lightbox">
-  <button id="lbClose">✕</button>
-  <video id="lbVideo" controls playsinline></video>
-  <div id="lbTitle"></div>
-  <div id="lbDesc"></div>
-</div>
+<footer id="footerTxt"></footer>
 
 <script src="works.js"></script>
 <script>
 (function(){
   "use strict";
-  const grid = document.getElementById('worksGrid');
-  grid.innerHTML = WORKS.map((w,i) => `
-    <div class="work" data-i="${i}">
-      <img loading="lazy" src="${w.thumb}" alt="${w.title}">
-      <div class="play"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
-      <div class="overlay">
-        <div class="t">${w.title}</div>
-        <div class="d">${w.desc}</div>
-        <div class="tag-row">${(w.tags||[]).map(t=>`<span class="tag">${t}</span>`).join('')}</div>
-      </div>
-    </div>`).join('');
+  let currentLang = localStorage.getItem('pf_lang') || 'en';
 
-  const lb = document.getElementById('lightbox');
-  const vid = document.getElementById('lbVideo');
+  function renderWorks(){
+    const grid = document.getElementById('worksGrid');
+    grid.innerHTML = WORKS.map((w,i) => `
+      <div class="work" data-i="${i}">
+        <div class="thumb">
+          <img loading="lazy" src="${w.thumb}" alt="">
+          <video preload="metadata" playsinline loop muted src="${w.video}"></video>
+          <div class="play-btn"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
+          <button class="stop-btn" title="Stop">✕</button>
+          <div class="progress"></div>
+        </div>
+        <div class="overlay">
+          <div class="t">${w.title[currentLang]}</div>
+          <div class="d">${w.desc[currentLang]}</div>
+          <div class="tag-row">${(w.tags||[]).map(t=>`<span class="tag">${t}</span>`).join('')}</div>
+        </div>
+      </div>`).join('');
 
-  function openLb(i){
-    const w = WORKS[i];
-    vid.src = w.video;
-    document.getElementById('lbTitle').textContent = w.title;
-    document.getElementById('lbDesc').textContent = w.desc || '';
-    lb.classList.add('open');
-    document.body.style.overflow = 'hidden';
-    vid.play().catch(()=>{});
+    grid.querySelectorAll('.work').forEach(card => {
+      const vid = card.querySelector('video');
+      const prog = card.querySelector('.progress');
+      card.addEventListener('click', (e) => {
+        if(e.target.classList.contains('stop-btn')){ stopAll(); return; }
+        if(card.classList.contains('playing')) return;
+        stopAll();
+        // شروع پخش inline داخل همون کارت
+        card.classList.add('playing');
+        vid.muted = false;
+        vid.currentTime = 0;
+        vid.play().catch(()=>{ vid.muted = true; vid.play(); });
+      });
+      vid.addEventListener('timeupdate', () => {
+        prog.style.width = (vid.duration ? (vid.currentTime/vid.duration)*100 : 0) + '%';
+      });
+      vid.addEventListener('ended', () => stopCard(card));
+    });
   }
-  function closeLb(){
-    lb.classList.remove('open');
-    vid.pause(); vid.src='';
-    document.body.style.overflow = '';
+
+  function stopCard(card){
+    const v = card.querySelector('video');
+    v.pause();
+    card.classList.remove('playing');
+    card.querySelector('.progress').style.width = '0%';
   }
-  grid.querySelectorAll('.work').forEach(el => {
-    el.addEventListener('click', () => openLb(+el.dataset.i));
+  function stopAll(){
+    document.querySelectorAll('.work.playing').forEach(stopCard);
+  }
+
+  function applyLang(lang){
+    currentLang = lang;
+    localStorage.setItem('pf_lang', lang);
+    const T = I18N[lang];
+    document.documentElement.lang = lang;
+    document.documentElement.dir = T.dir;
+
+    document.getElementById('badge').textContent = T.badge;
+    document.getElementById('helloTxt').textContent = T.hello;
+    document.getElementById('nameTxt').textContent = T.name;
+    document.getElementById('roleTxt').innerHTML = T.role;
+    document.getElementById('ctaWorks').textContent = T.ctaWorks;
+    document.getElementById('ctaContact').textContent = T.ctaContact;
+    document.getElementById('aboutTitle').textContent = T.aboutTitle;
+    document.getElementById('aboutHtml').innerHTML = T.aboutHtml;
+    document.getElementById('worksTitle').textContent = T.worksTitle;
+    document.getElementById('contactTitle').textContent = T.contactTitle;
+    document.getElementById('tgLbl').textContent = T.telegram;
+    document.getElementById('igLbl').textContent = T.instagram;
+    document.getElementById('emLbl').textContent = T.email;
+    document.getElementById('footerTxt').textContent = T.footer;
+    document.getElementById('skillsRow').innerHTML = T.skills.map(s=>`<span class="skill">${s}</span>`).join('');
+    document.title = lang === 'fa' ? 'محمد — تدوینگر ویدیو | نمونه‌کارها' : 'Mohammad — Video Editor | Portfolio';
+    document.querySelectorAll('.flag').forEach(f => f.classList.toggle('active', f.dataset.lang === lang));
+    renderWorks();
+  }
+
+  document.querySelectorAll('.flag').forEach(f => {
+    f.addEventListener('click', () => applyLang(f.dataset.lang));
   });
-  document.getElementById('lbClose').addEventListener('click', closeLb);
-  lb.addEventListener('click', e => { if(e.target === lb) closeLb(); });
-  document.addEventListener('keydown', e => { if(e.key === 'Escape') closeLb(); });
+
+  applyLang(currentLang);
 })();
 </script>
 </body>
