@@ -155,6 +155,13 @@
 <body>
 
 <div class="aurora"><div class="blob b1"></div><div class="blob b2"></div><div class="blob b3"></div></div>
+
+<!-- language switcher -->
+<div class="lang-switch" id="langSwitch">
+  <div class="flag active" data-lang="en" title="English"><img src="https://hatscripts.github.io/circle-flags/flags/gb.svg" alt="EN"></div>
+  <div class="flag" data-lang="fa" title="فارسی"><img src="https://hatscripts.github.io/circle-flags/flags/ir.svg" alt="FA"></div>
+</div>
+
 <div id="expandLayer">
   <div id="expandCard">
     <video playsinline loop controls></video>
@@ -265,9 +272,11 @@
     document.documentElement.lang = lang;
     document.documentElement.dir = T.dir;
     const set = (id,val) => { const el=document.getElementById(id); if(el) el.innerHTML = val; };
-    ['badge','helloTxt','nameTxt','roleTxt','ctaWorks','ctaContact','aboutTitle',
-     'aboutHtml','worksTitle','contactTitle','tgLbl','igLbl','emLbl','footerTxt']
-      .forEach(id => set(id, T[id]));
+    const map = { badge:'badge', helloTxt:'hello', nameTxt:'name', roleTxt:'role',
+      ctaWorks:'ctaWorks', ctaContact:'ctaContact', aboutTitle:'aboutTitle',
+      aboutHtml:'aboutHtml', worksTitle:'worksTitle', contactTitle:'contactTitle',
+      tgLbl:'telegram', igLbl:'instagram', emLbl:'email', footerTxt:'footer' };
+    Object.entries(map).forEach(([id, key]) => set(id, T[key]));
     set('phLbl', T.phone || 'Phone');
     document.title = lang === 'fa' ? 'محمد — تدوینگر ویدیو | نمونه‌کارها' : 'Mohammad — Video Editor | Portfolio';
     document.querySelectorAll('.flag').forEach(f => f.classList.toggle('active', f.dataset.lang === lang));
