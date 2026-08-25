@@ -59,6 +59,7 @@
   .btn.ghost:hover{background:rgba(255,255,255,.09)}
 
   section{padding:70px 0}
+  .desc-center{text-align:center;color:var(--muted);font-size:13.5px;margin:-14px 0 34px}
   .sec-title{display:flex;align-items:center;gap:14px;margin-bottom:34px}
   .sec-title h2{font-size:clamp(22px,3.5vw,30px);margin:0;font-weight:800;white-space:nowrap}
   .sec-title::after{content:"";flex:1;height:1px;background:linear-gradient(to left,var(--border),transparent)}
@@ -135,6 +136,71 @@
   .glass-btn:hover{background:rgba(255,255,255,.2)}
   #expandClose{width:38px;height:38px;border-radius:50%;font-size:14px;flex-shrink:0}
 
+  /* ===== pricing tiers ===== */
+  .tiers{display:grid;grid-template-columns:repeat(auto-fit,minmax(270px,1fr));gap:20px;align-items:stretch}
+  .tier{position:relative;border-radius:22px;padding:30px 26px;background:var(--panel);
+    border:1px solid var(--border);backdrop-filter:blur(16px);transition:.35s var(--ease);display:flex;flex-direction:column}
+  .tier:hover{transform:translateY(-6px)}
+  .tier-a{--tc:#38bdf8; --tcs:#7dd3fc}
+  .tier-b{--tc:#2dd4bf; --tcs:#5eead4; border-color:rgba(45,212,191,.4)!important;
+    box-shadow:0 24px 60px -18px rgba(45,212,191,.28)}
+  .tier-c{--tc:#a78bfa; --tcs:#c4b5fd}
+  .tier-b::before{content:"";position:absolute;inset:-1px;border-radius:22px;padding:1px;pointer-events:none;
+    background:linear-gradient(160deg,rgba(45,212,191,.7),transparent 40%,transparent 60%,rgba(56,189,248,.5));
+    -webkit-mask:linear-gradient(#fff 0 0) content-box,linear-gradient(#fff 0 0);
+    -webkit-mask-composite:xor;mask-composite:exclude}
+  .tier-letter{width:58px;height:58px;border-radius:16px;display:flex;align-items:center;justify-content:center;
+    font-size:26px;font-weight:800;color:#06202e;margin-bottom:16px;
+    background:linear-gradient(150deg,var(--tcs),var(--tc));box-shadow:0 10px 26px -8px var(--tc);
+    font-family:'Space Grotesk','Vazirmatn',sans-serif}
+  .tier.popular .pop-badge{position:absolute;top:-13px;right:22px;font-size:10.5px;font-weight:800;
+    padding:5px 14px;border-radius:999px;background:linear-gradient(150deg,#5eead4,#2dd4bf);color:#04211c;
+    letter-spacing:.05em;box-shadow:0 8px 20px -6px rgba(45,212,191,.6)}
+  html[dir="rtl"] .tier.popular .pop-badge{right:auto;left:22px}
+  .tier h3{font-size:17px;font-weight:800;margin:0 0 8px;line-height:1.5}
+  .tier .tagline{font-size:12.5px;color:var(--muted);margin-bottom:18px;line-height:1.8}
+  .tier ul{list-style:none;padding:0;margin:0 0 22px;flex:1}
+  .tier li{font-size:12.8px;padding:7px 0;display:flex;align-items:center;gap:9px;color:var(--muted)}
+  .tier li b{color:var(--tc);font-size:14px;line-height:1}
+  .tier-order{display:block;text-align:center;text-decoration:none;font-family:inherit;font-weight:700;
+    font-size:13px;padding:12px;border-radius:13px;transition:.25s var(--ease);
+    color:var(--tcs);border:1.5px solid var(--tc);background:transparent}
+  .tier-order:hover{background:var(--tc);color:#06202e;transform:translateY(-2px)}
+
+  /* ===== process steps ===== */
+  .steps{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:18px;counter-reset:step}
+  .step{background:var(--panel);border:1px solid var(--border);border-radius:var(--radius);padding:26px 22px;
+    position:relative;backdrop-filter:blur(12px);transition:.3s var(--ease)}
+  .step:hover{transform:translateY(-4px);border-color:rgba(56,189,248,.35)}
+  .step .num{position:absolute;top:14px;left:16px;font-size:44px;font-weight:800;color:rgba(56,189,248,.12);
+    font-family:'Space Grotesk',sans-serif;line-height:1}
+  html[dir="rtl"] .step .num{left:auto;right:16px}
+  .step .ico{font-size:28px;margin-bottom:12px}
+  .step h4{margin:0 0 6px;font-size:14.5px;font-weight:800}
+  .step p{margin:0;font-size:12px;color:var(--muted);line-height:1.8}
+
+  /* ===== animated stats ===== */
+  .stats-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:16px;
+    background:linear-gradient(140deg,rgba(56,189,248,.09),rgba(45,212,191,.07));
+    border:1px solid var(--border);border-radius:22px;padding:36px 24px}
+  .stat{text-align:center}
+  .stat .n{font-size:clamp(30px,4.5vw,42px);font-weight:800;font-family:'Space Grotesk','Vazirmatn',sans-serif;
+    background:linear-gradient(120deg,var(--accent-soft),var(--teal));-webkit-background-clip:text;background-clip:text;
+    -webkit-text-fill-color:transparent;line-height:1.2}
+  .stat .l{font-size:12px;color:var(--muted);margin-top:4px}
+
+  /* ===== FAQ ===== */
+  .faq-list{max-width:760px;margin:0 auto}
+  details{background:var(--panel);border:1px solid var(--border);border-radius:15px;margin-bottom:11px;
+    overflow:hidden;transition:.25s}
+  details[open]{border-color:rgba(56,189,248,.4)}
+  summary{cursor:pointer;list-style:none;padding:17px 20px;font-size:14px;font-weight:700;
+    display:flex;align-items:center;justify-content:space-between;gap:12px}
+  summary::-webkit-details-marker{display:none}
+  summary::after{content:"+";font-size:19px;color:var(--accent);transition:.25s;font-family:'Space Grotesk',sans-serif}
+  details[open] summary::after{transform:rotate(45deg)}
+  details p{margin:0;padding:0 20px 18px;font-size:13px;color:var(--muted);line-height:2}
+
   .contact-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px}
   .contact-card{background:var(--panel);border:1px solid var(--border);border-radius:var(--radius);padding:24px;text-align:center;
     text-decoration:none;color:var(--text);transition:.3s var(--ease);backdrop-filter:blur(12px)}
@@ -194,6 +260,26 @@
 <section id="works" class="reveal">
   <div class="sec-title"><h2 id="worksTitle"></h2></div>
   <div class="grid" id="worksGrid"></div>
+</section>
+
+<section id="pricing" class="reveal">
+  <div class="sec-title"><h2 id="pricingTitle"></h2></div>
+  <p class="desc-center" id="pricingDesc"></p>
+  <div class="tiers" id="tiersGrid"></div>
+</section>
+
+<section id="process" class="reveal">
+  <div class="sec-title"><h2 id="processTitle"></h2></div>
+  <div class="steps" id="stepsRow"></div>
+</section>
+
+<section id="stats-sec" class="reveal">
+  <div class="stats-row" id="statsRow"></div>
+</section>
+
+<section id="faq" class="reveal">
+  <div class="sec-title"><h2 id="faqTitle"></h2></div>
+  <div class="faq-list" id="faqList"></div>
 </section>
 
 <section id="contact" class="reveal">
@@ -265,6 +351,58 @@
   document.getElementById('expandClose').addEventListener('click', closePlayer);
   document.addEventListener('keydown', e => { if(e.key === 'Escape') closePlayer(); });
 
+
+  function renderTiers(){
+    const T = I18N[currentLang];
+    set2('pricingTitle', T.pricingTitle); set2('pricingDesc', T.pricingDesc);
+    document.getElementById('tiersGrid').innerHTML = TIERS.map(t => `
+      <div class="tier ${t.theme} ${t.popular?'popular':''}">
+        ${t.popular ? `<span class="pop-badge">${I18N[currentLang].popular}</span>` : ''}
+        <div class="tier-letter">${t.key}</div>
+        <h3>${t.name[currentLang]}</h3>
+        <div class="tagline">${t.tagline[currentLang]}</div>
+        <ul>${t.features[currentLang].map(f=>`<li><b>✓</b> ${f}</li>`).join('')}</ul>
+        <a class="tier-order" href="https://t.me/editoramx" target="_blank" rel="noopener">${I18N[currentLang].orderBtn}</a>
+      </div>`).join('');
+  }
+  function renderProcess(){
+    const T = I18N[currentLang];
+    set2('processTitle', T.processTitle);
+    document.getElementById('stepsRow').innerHTML = T.steps.map((s,i) => `
+      <div class="step"><span class="num">0${i+1}</span>
+        <div class="ico">${s.ico}</div><h4>${s.t}</h4><p>${s.d}</p>
+      </div>`).join('');
+  }
+  function renderFaq(){
+    const T = I18N[currentLang];
+    set2('faqTitle', T.faqTitle);
+    document.getElementById('faqList').innerHTML = T.faqs.map(f =>
+      `<details><summary>${f.q}</summary><p>${f.a}</p></details>`).join('');
+  }
+  let statAnim = null;
+  function renderStats(){
+    const T = I18N[currentLang];
+    set2('statsTitle', T.statsTitle);
+    const row = document.getElementById('statsRow');
+    row.innerHTML = T.stats.map(s => `<div class="stat"><div class="n" data-n="${s.n}" data-suf="${s.suf}">0${s.suf}</div><div class="l">${s.l}</div></div>`).join('');
+    // شمارنده متحرک هر بار که بخش دیده می‌شود
+    if(statAnim) statAnim.disconnect();
+    statAnim = new IntersectionObserver(es => es.forEach(e => {
+      if(!e.isIntersecting) return;
+      statAnim.unobserve(e.target);
+      e.target.querySelectorAll('.n').forEach(el => {
+        const target = +el.dataset.n, suf = el.dataset.suf, dur = 1400, t0 = performance.now();
+        (function tick(t){
+          const k = Math.min(1,(t-t0)/dur), ease = 1-Math.pow(1-k,3);
+          el.textContent = Math.round(target*ease) + suf;
+          if(k<1) requestAnimationFrame(tick);
+        })(t0);
+      });
+    }), {threshold:.4});
+    statAnim.observe(row);
+  }
+  function set2(id,val){ const el=document.getElementById(id); if(el) el.innerHTML=val; }
+
   function applyLang(lang){
     currentLang = lang;
     localStorage.setItem('pf_lang', lang);
@@ -281,6 +419,10 @@
     document.title = lang === 'fa' ? 'محمد — تدوینگر ویدیو | نمونه‌کارها' : 'Mohammad — Video Editor | Portfolio';
     document.querySelectorAll('.flag').forEach(f => f.classList.toggle('active', f.dataset.lang === lang));
     renderWorks();
+    renderTiers();
+    renderProcess();
+    renderStats();
+    renderFaq();
   }
 
   document.querySelectorAll('.flag').forEach(f =>
