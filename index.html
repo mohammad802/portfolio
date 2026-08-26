@@ -207,17 +207,35 @@
   details p{margin:0;padding:0 20px 18px;font-size:13px;color:var(--muted);line-height:2}
 
   /* ===== showreel in hero ===== */
-  .showreel-wrap{position:absolute;bottom:20px;left:50%;transform:translateX(-50%);width:min(860px,92vw);border-radius:20px;overflow:hidden;z-index:5}
-  .showreel-wrap video{display:block;width:100%;height:auto;border-radius:20px;background:#000;border:1px solid rgba(255,255,255,.12);box-shadow:0 20px 60px -15px rgba(0,0,0,.5)}
-  .sr-sound-btn{position:absolute;bottom:14px;right:14px;z-index:5;width:44px;height:44px;border-radius:50%;display:flex;align-items:center;justify-content:center}
-  .sr-sound-on,.sr-sound-off{display:none}
-  .showreel-wrap video.muted ~ .sr-sound-btn .sr-sound-off{display:block}
-  .showreel-wrap video:not(.muted) ~ .sr-sound-btn .sr-sound-on{display:block}
+  .showreel-wrap{position:relative;width:min(860px,92vw);max-width:100%;border-radius:20px;overflow:hidden;box-shadow:0 24px 80px -20px rgba(0,0,0,.6)}
+  .showreel-wrap video{display:block;width:100%;height:auto;border-radius:20px;background:#000;border:1px solid rgba(255,255,255,.1);box-shadow:0 8px 32px -8px rgba(0,0,0,.4)}
 
-  .sr-play-btn{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:72px;height:72px;border-radius:50%;z-index:5;opacity:0;transition:opacity .3s var(--ease)}
-  .sr-play-btn svg{width:32px;height:32px;fill:#fff;margin-right:4px}
+  /* Controls overlay - ON TOP of video */
+  .sr-controls{position:absolute;inset:0;display:flex;flex-direction:column;justify-content:center;align-items:center;pointer-events:none;z-index:10}
+  .sr-controls > *{pointer-events:auto}
+
+  /* Play button - center overlay */
+  .sr-play-btn{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:80px;height:80px;border-radius:50%;opacity:0;transition:opacity .3s var(--ease);z-index:5}
+  .sr-play-btn svg{width:36px;height:36px;fill:#fff;margin-right:5px}
   .showreel-wrap:hover .sr-play-btn{opacity:1}
   .showreel-wrap.playing .sr-play-btn{display:none}
+
+  /* Sound button - bottom right */
+  .sr-sound-btn{position:absolute;bottom:18px;right:18px;width:48px;height:48px;border-radius:50%;z-index:5;display:flex;align-items:center;justify-content:center}
+  .sr-sound-on,.sr-sound-off{display:none;transition:opacity .2s}
+  .showreel-wrap video.muted ~ .sr-controls .sr-sound-off{display:flex}
+  .showreel-wrap video:not(.muted) ~ .sr-controls .sr-sound-on{display:flex}
+  .showreel-wrap video.muted ~ .sr-controls .sr-sound-on{display:none}
+  .showreel-wrap video:not(.muted) ~ .sr-controls .sr-sound-off{display:none}
+
+  /* Glass button base */
+  .glass-btn{backdrop-filter:blur(18px) saturate(160%);-webkit-backdrop-filter:blur(18px) saturate(160%);
+    background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.22);
+    box-shadow:0 8px 32px rgba(0,0,0,.25), inset 0 1px 0 rgba(255,255,255,.18);
+    display:flex;align-items:center;justify-content:center;cursor:pointer;transition:.25s var(--ease);color:#fff}
+  .glass-btn:hover{background:rgba(255,255,255,.2);transform:scale(1.06)}
+  .glass-btn:active{transform:scale(.96)}
+  .sr-sound-btn svg{width:22px;height:22px}
 
   .sr-play-btn{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:72px;height:72px;border-radius:50%;z-index:5;opacity:0;transition:opacity .3s var(--ease)}
   .sr-play-btn svg{width:32px;height:32px;fill:#fff;margin-right:4px}
@@ -279,13 +297,15 @@
   <!-- Showreel in Hero -->
   <div class="showreel-wrap" id="showreelWrap">
     <video id="showreelVideo" playsinline loop muted preload="metadata" poster="thumbs/34845729.jpg"></video>
-    <button class="sr-play-btn glass-btn" id="srPlayBtn" title="Play">
-      <svg viewBox="0 0 24 24"><path fill="currentColor" d="M8 5v14l11-7z"/></svg>
-    </button>
-    <button class="sr-sound-btn glass-btn" id="srSoundBtn" title="Toggle sound">
-      <svg class="sr-sound-on" viewBox="0 0 24 24"><path fill="currentColor" d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02z"/></svg>
-      <svg class="sr-sound-off" viewBox="0 0 24 24"><path fill="currentColor" d="M16.5 12c0-1.77-1.02-3.29-2.5-4.03v2.21l2.45 2.45c.03-.2.05-.41.05-.63zm2.5 0c0 .94-.2 1.82-.54 2.64l1.51 1.51c2.83-1.44 5.15-3.75 5.15-7.41zM4.27 3L3 4.27 7.73 9H3v6h4l5 5v-6.73l4.25 4.25c-.67.52-1.42.93-2.3 1.27v2.3c1.59.65 3.42.54 5-.03l2.17 2.17c-2.08 1.08-4.43 1.62-6.96 1.62C5.21 19 0 13.79 0 6.73v2.09c2.99.98 5.93 2.58 8.47 4.84L14 17.73V5.27L4.27 3z"/></svg>
-    </button>
+    <div class="sr-controls">
+      <button class="sr-play-btn glass-btn" id="srPlayBtn" title="Play" aria-label="Play">
+        <svg viewBox="0 0 24 24"><path fill="currentColor" d="M8 5v14l11-7z"/></svg>
+      </button>
+      <button class="sr-sound-btn glass-btn" id="srSoundBtn" title="Toggle sound" aria-label="Toggle sound">
+        <svg class="sr-sound-on" viewBox="0 0 24 24"><path fill="currentColor" d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02z"/></svg>
+        <svg class="sr-sound-off" viewBox="0 0 24 24"><path fill="currentColor" d="M16.5 12c0-1.77-1.02-3.29-2.5-4.03v2.21l2.45 2.45c.03-.2.05-.41.05-.63zm2.5 0c0 .94-.2 1.82-.54 2.64l1.51 1.51c2.83-1.44 5.15-3.75 5.15-7.41zM4.27 3L3 4.27 7.73 9H3v6h4l5 5v-6.73l4.25 4.25c-.67.52-1.42.93-2.3 1.27v2.3c1.59.65 3.42.54 5-.03l2.17 2.17c-2.08 1.08-4.43 1.62-6.96 1.62C5.21 19 0 13.79 0 6.73v2.09c2.99.98 5.93 2.58 8.47 4.84L14 17.73V5.27L4.27 3z"/></svg>
+      </button>
+    </div>
   </div>
 </header>
 
@@ -464,35 +484,80 @@
     rocket: '<svg viewBox="0 0 24 24" fill="none" stroke="#7dd3fc" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09z"/><path d="M12 15l-3-3a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.35 22.35 0 0 1-4 2z"/><path d="M9 12H4s.55-3.03 2-4c1.62-1.08 5 0 5 0M12 15v5s3.03-.55 4-2c1.08-1.62 0-5 0-5"/></svg>'
   };
 
-  // Showreel
+  // Showreel - robust playback
   const showreel = document.getElementById('showreelVideo');
   const srPlayBtn = document.getElementById('srPlayBtn');
   const srSoundBtn = document.getElementById('srSoundBtn');
   if(showreel){
     showreel.src = 'showreel.mp4';
     showreel.muted = true;
-    // Try autoplay with muted
-    const playPromise = showreel.play();
-    if(playPromise !== undefined){
-      playPromise.catch(() => {
-        // Autoplay blocked - show play button
-        showreel.classList.remove('playing');
-      });
-    }
-    showreel.addEventListener('click', () => {
+    showreel.playsInline = true;
+    
+    // Autoplay with muted - handle gracefully
+    const tryAutoplay = () => {
+      showreel.muted = true;
+      const p = showreel.play();
+      if(p !== undefined){
+        p.then(() => {
+          showreel.classList.add('playing');
+        }).catch(() => {
+          // Autoplay blocked - wait for user interaction
+          showreel.classList.remove('playing');
+        });
+      }
+    };
+    
+    // Try autoplay immediately
+    tryAutoplay();
+    
+    // If autoplay fails, retry when user interacts with page
+    const handleUserInteraction = () => {
+      if(showreel.paused){
+        showreel.play().catch(()=>{});
+        document.removeEventListener('click', handleUserInteraction);
+        document.removeEventListener('keydown', handleUserInteraction);
+      }
+    };
+    document.addEventListener('click', handleUserInteraction, {once: true});
+    document.addEventListener('keydown', handleUserInteraction, {once: true});
+    
+    // Click video to play/pause
+    showreel.addEventListener('click', (e) => {
+      e.stopPropagation();
       if(showreel.paused) showreel.play();
       else showreel.pause();
     });
-    srPlayBtn.addEventListener('click', (e) => {
+    
+    // Play button
+    const srPlayBtn = document.getElementById('srPlayBtn');
+    if(srPlayBtn){
+      srPlayBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        showreel.play().catch(()=>{});
+      });
+    }
+    
+    // Sound button
+    const srSoundBtn = document.getElementById('srSoundBtn');
+    if(srSoundBtn){
+      srSoundBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        showreel.muted = !showreel.muted;
+        showreel.classList.toggle('muted', showreel.muted);
+      });
+    }
+    
+    // Play/pause on video click
+    showreel.addEventListener('click', (e) => {
       e.stopPropagation();
-      showreel.play();
+      if(showreel.paused) showreel.play().catch(()=>{});
+      else showreel.pause();
     });
-    srSoundBtn.addEventListener('click', () => {
-      showreel.muted = !showreel.muted;
-      showreel.classList.toggle('muted', showreel.muted);
-    });
-    showreel.addEventListener('play', () => showreel.classList.add('playing'));
-    showreel.addEventListener('pause', () => showreel.classList.remove('playing'));
+    
+    // Sync UI state
+    showreel.addEventListener('play', () => showreel.closest('.showreel-wrap').classList.add('playing'));
+    showreel.addEventListener('pause', () => showreel.closest('.showreel-wrap').classList.remove('playing'));
+    showreel.addEventListener('ended', () => showreel.closest('.showreel-wrap').classList.remove('playing'));
   }
 
   function applyLang(lang){
