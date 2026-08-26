@@ -127,10 +127,10 @@ const I18N = {
     popular: "Most Popular",
     processTitle: "How It Works",
     steps: [
-      {ico:"📦", t:"Send Footage", d:"Share your raw files via Telegram or Drive with a short brief."},
-      {ico:"✂️", t:"I Edit", d:"Cutting, pacing, color, sound design — crafted with care."},
-      {ico:"🔁", t:"Your Review", d:"You watch the draft and request any tweaks you want."},
-      {ico:"🚀", t:"Delivery", d:"Final files in every format you need — on time."}
+      {ico:"box", t:"Send Footage", d:"Share your raw files via Telegram or Drive with a short brief."},
+      {ico:"scissors", t:"I Edit", d:"Cutting, pacing, color, sound design — crafted with care."},
+      {ico:"eye", t:"Your Review", d:"You watch the draft and request any tweaks you want."},
+      {ico:"rocket", t:"Delivery", d:"Final files in every format you need — on time."}
     ],
     statsTitle: "By The Numbers",
     stats: [
@@ -172,10 +172,10 @@ const I18N = {
     popular: "محبوب‌ترین",
     processTitle: "روند کار",
     steps: [
-      {ico:"📦", t:"ارسال فایل", d:"فایل خامت رو از طریق تلگرام یا درایو با یه توضیح کوتاه بفرست."},
-      {ico:"✂️", t:"تدوین", d:"کات، ریتم، رنگ و صدا — با دقت و وسواس ساخته میشه."},
-      {ico:"🔁", t:"بازبینی تو", d:"نسخه رو می‌بینی و هر تغییری که بخوای می‌گی."},
-      {ico:"🚀", t:"تحویل", d:"فایل نهایی با هر فرمتی که لازم داری — سر وقت."}
+      {ico:"box", t:"ارسال فایل", d:"فایل خامت رو از طریق تلگرام یا درایو با یه توضیح کوتاه بفرست."},
+      {ico:"scissors", t:"تدوین", d:"کات، ریتم، رنگ و صدا — با دقت و وسواس ساخته میشه."},
+      {ico:"eye", t:"بازبینی تو", d:"نسخه رو می‌بینی و هر تغییری که بخوای می‌گی."},
+      {ico:"rocket", t:"تحویل", d:"فایل نهایی با هر فرمتی که لازم داری — سر وقت."}
     ],
     statsTitle: "اعداد من",
     stats: [
