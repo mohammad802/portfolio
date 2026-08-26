@@ -213,12 +213,17 @@
   /* Controls overlay - ON TOP of video */
   .sr-controls{position:absolute;inset:0;display:flex;flex-direction:column;justify-content:center;align-items:center;pointer-events:none;z-index:10}
   .sr-controls > *{pointer-events:auto}
-
   /* Play button - center overlay */
   .sr-play-btn{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:80px;height:80px;border-radius:50%;opacity:0.85;transition:opacity .3s var(--ease), transform .3s var(--ease);z-index:5}
   .sr-play-btn svg{width:36px;height:36px;fill:#fff}
   .showreel-wrap:hover .sr-play-btn{opacity:1;transform:translate(-50%,-50%) scale(1.1)}
   .showreel-wrap.playing .sr-play-btn{opacity:0;pointer-events:none}
+
+  /* Play button - center overlay */
+  
+  .sr-play-btn svg{width:36px;height:36px;fill:#fff}
+  .showreel-wrap:hover 
+  .showreel-wrap.playing 
 
   /* Sound button - bottom right */
   .sr-sound-btn{position:absolute;bottom:18px;right:18px;width:48px;height:48px;border-radius:50%;z-index:5;display:flex;align-items:center;justify-content:center;opacity:0.85;transition:opacity .2s}
@@ -238,10 +243,10 @@
   .glass-btn:active{transform:scale(.96)}
   .sr-sound-btn svg{width:22px;height:22px}
 
-  .sr-play-btn{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:72px;height:72px;border-radius:50%;z-index:5;opacity:0;transition:opacity .3s var(--ease)}
+  
   .sr-play-btn svg{width:32px;height:32px;fill:#fff;margin-right:4px}
-  .showreel-wrap:hover .sr-play-btn{opacity:1}
-  .showreel-wrap.playing .sr-play-btn{display:none}
+  .showreel-wrap:hover 
+  .showreel-wrap.playing 
 
   .contact-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px}
   .contact-card{background:var(--panel);border:1px solid var(--border);border-radius:var(--radius);padding:24px;text-align:center;
