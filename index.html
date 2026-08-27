@@ -248,6 +248,17 @@
   .showreel-wrap:hover 
   .showreel-wrap.playing 
 
+  /* ===== Page Loader ===== */
+  .page-loader{position:fixed;inset:0;z-index:9999;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:18px;
+    background:var(--bg);color:var(--text);backdrop-filter:blur(8px);transition:opacity .4s var(--ease), visibility .4s}
+  .page-loader.hidden{opacity:0;visibility:hidden;pointer-events:none}
+  .goo-loader{width:96px;height:96px}
+  .loader-text{font-size:14px;font-weight:500;color:var(--muted);letter-spacing:.03em}
+  @media (prefers-reduced-motion: reduce) {
+    .goo-arm { animation: none; }
+    .goo-core { animation: none; }
+  }
+
   .contact-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px}
   .contact-card{background:var(--panel);border:1px solid var(--border);border-radius:var(--radius);padding:24px;text-align:center;
     text-decoration:none;color:var(--text);transition:.3s var(--ease);backdrop-filter:blur(12px)}
@@ -268,6 +279,50 @@
 </style>
 </head>
 <body>
+<!-- Page Loader -->
+<div id="pageLoader" class="page-loader" aria-hidden="true">
+  <svg class="goo-loader" viewBox="0 0 64 64" width="96" height="96" fill="none" role="img" aria-label="Loading">
+    <style>
+      .goo-loader { color: var(--accent); --rate: 1; }
+      .goo-bound { stroke: currentColor; stroke-width: 1; opacity: .14; }
+      .goo-arm {
+        transform-box: view-box;
+        transform-origin: center;
+        animation: goo-swing calc(var(--dur) * var(--rate, 1)) linear infinite;
+      }
+      .goo-core {
+        transform-box: view-box;
+        transform-origin: center;
+        animation: goo-breathe calc(3.2s * var(--rate, 1)) ease-in-out infinite;
+      }
+      @keyframes goo-swing { from { transform: rotate(0deg); } to { transform: rotate(calc(var(--dir) * 360deg)); } }
+      @keyframes goo-breathe { 0%, 100% { transform: scale(.82); } 50% { transform: scale(1.05); } }
+      @media (prefers-reduced-motion: reduce) {
+        .goo-arm { animation: none; transform: rotate(var(--rest)); }
+        .goo-core { animation: none; transform: scale(1); }
+      }
+    </style>
+    <defs>
+      <filter id="goo-weld" x="-30%" y="-30%" width="160%" height="160%">
+        <feGaussianBlur in="SourceGraphic" stdDeviation="2.6" result="soft"/>
+        <feColorMatrix in="soft" type="matrix"
+          values="1 0 0 0 0
+                  0 1 0 0 0
+                  0 0 1 0 0
+                  0 0 0 19 -8"/>
+      </filter>
+    </defs>
+    <circle class="goo-bound" cx="32" cy="32" r="30"/>
+    <g filter="url(#goo-weld)" fill="currentColor">
+      <circle class="goo-core" cx="32" cy="32" r="9.5"/>
+      <g class="goo-arm" style="--dur:2.8s;--dir:1;--rest:20deg"><circle cx="32" cy="21" r="7"/></g>
+      <g class="goo-arm" style="--dur:3.6s;--dir:-1;--rest:140deg"><circle cx="32" cy="17.5" r="5.5"/></g>
+      <g class="goo-arm" style="--dur:2.2s;--dir:1;--rest:255deg"><circle cx="32" cy="23" r="4.6"/></g>
+      <g class="goo-arm" style="--dur:4.4s;--dir:-1;--rest:310deg"><circle cx="32" cy="16" r="4"/></g>
+    </g>
+  </svg>
+  <span class="loader-text" id="loaderText"></span>
+</div>
 
 <div class="topbar">
   <span class="brand">👋 <b id="brandHello">Hi, I'm Mohammad</b> — <span id="brandRole">Video Editor</span></span>
@@ -564,6 +619,23 @@
     showreel.addEventListener('play', () => showreel.closest('.showreel-wrap').classList.add('playing'));
     showreel.addEventListener('pause', () => showreel.closest('.showreel-wrap').classList.remove('playing'));
     showreel.addEventListener('ended', () => showreel.closest('.showreel-wrap').classList.remove('playing'));
+  }
+
+  // Page loader
+  function hidePageLoader(){
+    const loader = document.getElementById('pageLoader');
+    if(loader){
+      loader.classList.add('hidden');
+      setTimeout(() => loader.remove(), 400);
+    }
+  }
+  // Hide loader when DOM ready
+  if(document.readyState === 'complete' || document.readyState === 'interactive'){
+    hidePageLoader();
+  } else {
+    window.addEventListener('load', hidePageLoader);
+    // Fallback timeout
+    setTimeout(hidePageLoader, 3000);
   }
 
   function applyLang(lang){
